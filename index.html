@@ -1,28 +1,36 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FTE Manual UTM Generator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FTE UTM Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    :root { --fte-red: #E63946; --fte-dark: #1D1D1D; --fte-gray: #f4f4f4; }
+    :root {
+      --fte-red: #E63946;
+      --fte-dark1: #2e0f64;
+      --fte-dark2: #6b2ec5;
+      --white: #fff;
+    }
     body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #2e0f64, #6b2ec5); color: #ffffff;
-      color: #222;
+      background: linear-gradient(135deg, var(--fte-dark1), var(--fte-dark2));
+      color: var(--white);
       padding: 2rem;
       max-width: 1000px;
       margin: auto;
     }
     header {
-      background-color: #E63946;
-      color: #fff;
-      padding: 1rem 2rem;
       text-align: center;
-      border-radius: 8px;
       margin-bottom: 2rem;
+    }
+    header h1 {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    header p code {
+      color: var(--fte-red);
+      font-weight: 600;
     }
     textarea {
       width: 100%;
@@ -30,50 +38,63 @@
       padding: 1rem;
       margin-bottom: 1rem;
       font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      outline: none;
     }
     button {
-      background-color: #E63946;
-      color: #fff;
+      background-color: var(--fte-red);
+      color: var(--white);
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      padding: 0.6rem 1rem;
+      padding: 0.75rem 1.25rem;
       font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #bf2938;
     }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
     }
     th, td {
       padding: 0.8rem;
-      border: 1px solid #444;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       text-align: left;
       vertical-align: top;
+      color: var(--white);
     }
     th {
-      background-color: #E63946; color: white;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: var(--fte-red);
+      color: var(--white);
+      font-weight: 600;
     }
     .utm-link {
       display: flex;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 0.5rem;
     }
     .utm-link input {
       width: 100%;
       margin-right: 0.5rem;
       font-family: monospace;
+      border-radius: 4px;
+      border: none;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
+      color: var(--fte-dark1);
     }
   </style>
 </head>
 <body>
-  
-    <header style="background: transparent; border: 2px solid white;">
-      <h1 style="font-weight: 600;">FTE UTM Generator</h1>
-      <p style="font-weight: 400;">Paste your links below. Format: <code style='color:#E63946;'>Year,Make,Model,URL</code></p>
-    
+  <header>
     <h1>FTE Manual UTM Generator</h1>
     <p>Paste multiple vehicle lines below. Format: <code>Year,Make,Model,URL</code></p>
   </header>
@@ -81,7 +102,7 @@
   <textarea id="manualInput" placeholder="2024,Polaris,Ranger XP,https://dealer.com/123" rows="6"></textarea>
   <button onclick="processManualInput()">Generate UTM Links</button>
 
-  <table id="utmTable">
+  <table id="utmTable" aria-label="Generated UTM Links">
     <thead>
       <tr>
         <th>Vehicle</th>
@@ -94,8 +115,11 @@
   <script>
     function processManualInput() {
       const raw = document.getElementById("manualInput").value.trim();
-      if (!raw) return alert("Paste your vehicle links first.");
-      const lines = raw.split("\n");
+      if (!raw) {
+        alert("Paste your vehicle links first.");
+        return;
+      }
+      const lines = raw.split("\\n");
       const tableBody = document.querySelector("#utmTable tbody");
       tableBody.innerHTML = '';
 
@@ -134,3 +158,4 @@
   </script>
 </body>
 </html>
+
