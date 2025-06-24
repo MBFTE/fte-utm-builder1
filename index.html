@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Hash Fragment Support</title>
+<title>FTE UTM Generator - Mobile Friendly</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -159,6 +159,64 @@
   }
   .utm-link-container button:hover {
     background-color: var(--button-hover);
+  }
+
+  /* Responsive Mobile Styles */
+  @media (max-width: 768px) {
+    textarea {
+      min-height: 150px;
+      font-size: 1.1rem;
+    }
+    button {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+    }
+    table, thead, tbody, th, td, tr {
+      display: block;
+      width: 100%;
+    }
+    thead tr {
+      display: none; /* Hide table headers on mobile */
+    }
+    tbody tr {
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--fte-blue);
+      padding-bottom: 1rem;
+    }
+    tbody tr td {
+      display: flex;
+      justify-content: space-between;
+      padding-left: 0;
+      padding-right: 0;
+      border: none;
+      color: var(--white);
+    }
+    tbody tr td.vehicle::before {
+      content: "Vehicle:";
+      font-weight: 700;
+      width: 40%;
+    }
+    tbody tr td.original-url::before {
+      content: "Original URL:";
+      font-weight: 700;
+      width: 40%;
+    }
+    tbody tr td.utm-links::before {
+      content: "UTM Links:";
+      font-weight: 700;
+      width: 40%;
+    }
+    .utm-link-container input {
+      min-width: auto;
+    }
+    .utm-link-container button {
+      width: auto;
+      padding: 0.5rem 1rem;
+    }
+    #output section {
+      padding: 1rem 1rem;
+    }
   }
 </style>
 </head>
