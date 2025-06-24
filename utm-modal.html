@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>UTM Generator</title>
+</head>
+<body>
+  <div id="utmTable" style="font-family: monospace; white-space: pre-wrap;"></div>
+  <button onclick="copyToClipboard()">Copy to Clipboard</button>
+
+  <script src="https://p.trellocdn.com/power-up.min.js"></script>
+  <script>
+    const t = TrelloPowerUp.iframe();
+    const mediums = ["facebook", "display", "CTV", "tiktok", "audio"];
+
+    function addUTM(base, medium) {
+      const delimiter = base.includes("?") ? "&" : "?";
+      return \`\${base}\${delimiter}utm_source=FTE&utm_medium=\${medium}\`;
+    }
+
+    function extractUrls(text) {
+      return text.match(/https?:\/\/[^\s]+/g) || [];
+    }
+
+    function buildTable(urls) {
+      return urls.map((url, i) => {
+        let section = \`Link \${i + 1}:
+Medium       | URL
+\`;
+        mediums.forEach(m => {
+          section += \`\${m.padEnd(12)}| \${addUTM(url, m)}
+\`;
+        });
+        return section + '\n';
+      }).join('');
+    }
+
+    t.card('desc').then(function(card) {
+      const urls = extractUrls(card.desc);
+      const table = buildTable(urls);
+      document.getElementById('utmTable').textContent = table;
+    });
+
+    function copyToClipboard() {
+      const text = document.getElementById('utmTable').textContent;
+      navigator.clipboard.writeText(text).then(() => alert("Copied!"));
+    }
+  </script>
+</body>
+</html>

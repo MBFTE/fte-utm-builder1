@@ -1,0 +1,21 @@
+{
+  "name": "FTE UTM Generator",
+  "id": "fte-utm-button",
+  "capabilities": {
+    "card-buttons": [
+      {
+        "text": "Generate UTM Links",
+        "callback": "showPopup"
+      }
+    ]
+  },
+  "connectors": {},
+  "iframeConnectorUrl": "https://12fa3291-d36b-4822-8431-ca8c3b51ce8c-00-2i55qe7sagzaz.riker.replit.dev/",
+"homepage": "https://12fa3291-d36b-4822-8431-ca8c3b51ce8c-00-2i55qe7sagzaz.riker.replit.dev/index.html"
+,
+  "author": "Follow The Eyes",
+  "icon": {
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Trello_logo.svg/2048px-Trello_logo.svg.png",
+    "size": "small"
+  }
+}
