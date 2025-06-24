@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FTE Bulk UTM Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #ffffff;
+      color: #222;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    header {
+      background-color: #111;
+      color: #fff;
+      padding: 1rem 2rem;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    input[type="file"], button {
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    button {
+      background-color: #E63946;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 0.6rem 1rem;
+      margin-right: 0.5rem;
+    }
+    button:hover {
+      background-color: #d0273a;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+    }
+    th, td {
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .utm-link {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .utm-link input {
+      width: 100%;
+      margin-right: 0.5rem;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FTE Bulk UTM Generator</h1>
+    <p>Upload a CSV with Year, Make, Model, and URL columns to generate UTM links for each.</p>
+  </header>
+
+  
+    <textarea id="manualInput" placeholder="Paste multiple links here, one per line, comma-separated like: Year,Make,Model,URL" rows="6" style="width:100%; font-family: monospace;"></textarea>
+    <br>
+    <button onclick="processManualInput()">Generate from Manual Input</button>
+    <br><br>
+    or upload CSV:
+    <input type="file" id="csvFile" accept=".csv" />
+    
+  <button onclick="downloadCSV()">Download CSV</button>
+
+  <table id="utmTable">
+    <thead>
+      <tr>
+        <th>Vehicle</th>
+        <th>UTM Links (Facebook, Display, CTV, TikTok, Audio)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let allRows = [];
+
+    document.getElementById("csvFile").addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const text = event.target.result;
+        const rows = text.trim().split("\n").slice(1);
+        const tableBody = document.querySelector("#utmTable tbody");
+        tableBody.innerHTML = '';
+        allRows = [];
+
+        rows.forEach(row => {
+          const [year, make, model, url] = row.split(",");
+          if (!url.startsWith("http")) return;
+
+          const vehicle = `${year} ${make} ${model}`;
+          const delimiter = url.includes('?') ? '&' : '?';
+          const platforms = ['facebook', 'display', 'CTV', 'tiktok', 'audio'];
+
+          const utmHTML = platforms.map((p, i) => {
+            const medium = p === 'CTV' ? 'CTV' : p.toLowerCase();
+            const tagged = `${url}${delimiter}utm_source=FTE&utm_medium=${medium}`;
+            allRows.push({ Vehicle: vehicle, Platform: p, UTM: tagged });
+            return `
+              <div class="utm-link">
+                <input type="text" id="link-${vehicle.replace(/\s+/g, '')}-${i}" value="${tagged}" readonly />
+                <button onclick="copyToClipboard('link-${vehicle.replace(/\s+/g, '')}-${i}')">Copy</button>
+              </div>`;
+          }).join('');
+
+          tableBody.innerHTML += `<tr><td><strong>${vehicle}</strong></td><td>${utmHTML}</td></tr>`;
+        });
+      };
+      reader.readAsText(file);
+    });
+
+    function copyToClipboard(id) {
+      const input = document.getElementById(id);
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Copied: " + input.value);
+    }
+
+    function downloadCSV() {
+      if (allRows.length === 0) {
+        alert("Please upload a file and generate links first.");
+        return;
+      }
+      let csv = "Vehicle,Platform,UTM Link\n";
+      allRows.forEach(row => {
+        csv += `${row.Vehicle},${row.Platform},${row.UTM}\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "bulk_fte_utm_links.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  
+    function processManualInput() {
+      const raw = document.getElementById("manualInput").value.trim();
+      if (!raw) return alert("Paste some links first.");
+      const lines = raw.split("\n");
+      const tableBody = document.querySelector("#utmTable tbody");
+      tableBody.innerHTML = '';
+      allRows = [];
+
+      lines.forEach(line => {
+        const [year, make, model, url] = line.split(",");
+        if (!url || !url.startsWith("http")) return;
+
+        const vehicle = `${year} ${make} ${model}`;
+        const delimiter = url.includes('?') ? '&' : '?';
+        const platforms = ['facebook', 'display', 'CTV', 'tiktok', 'audio'];
+
+        const utmHTML = platforms.map((p, i) => {
+          const medium = p === 'CTV' ? 'CTV' : p.toLowerCase();
+          const tagged = `${url}${delimiter}utm_source=FTE&utm_medium=${medium}`;
+          allRows.push({ Vehicle: vehicle, Platform: p, UTM: tagged });
+          return `
+            <div class="utm-link">
+              <input type="text" id="link-${vehicle.replace(/\s+/g, '')}-${i}" value="${tagged}" readonly />
+              <button onclick="copyToClipboard('link-${vehicle.replace(/\s+/g, '')}-${i}')">Copy</button>
+            </div>`;
+        }).join('');
+
+        tableBody.innerHTML += `<tr><td><strong>${vehicle}</strong></td><td>${utmHTML}</td></tr>`;
+      });
+    }
+    </script>
+
+</body>
+</html>
