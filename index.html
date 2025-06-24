@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Multi-Site Support</title>
+<title>FTE UTM Generator - Multi-Section Output</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -60,10 +60,21 @@
   button:hover {
     background-color: #164a68;
   }
+  section {
+    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  section h2 {
+    border-bottom: 2px solid var(--fte-blue);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     overflow: hidden;
@@ -130,16 +141,7 @@
 <button onclick="processManualInput()">Generate UTM Links</button>
 <button onclick="downloadCSV()">Download CSV</button>
 
-<table id="utmTable" aria-label="Generated UTM Links">
-<thead>
-  <tr>
-    <th>Vehicle</th>
-    <th>Original URL</th>
-    <th>UTM Links</th>
-  </tr>
-</thead>
-<tbody></tbody>
-</table>
+<div id="output"></div>
 
 <script>
   let allRows = [];
@@ -150,7 +152,6 @@
       const hostname = urlObj.hostname.toLowerCase();
       const parts = urlObj.pathname.split('/').filter(Boolean);
 
-      // skypowersportssanford.com
       if (hostname.includes('skypowersportssanford.com')) {
         const year = parts[3] || '';
         const make = parts[4] || '';
@@ -159,9 +160,7 @@
         const model = modelRaw.replace(/-/g, ' ');
         const vehicle = [year, make, model, vin].filter(Boolean).join(' ');
         return { vehicle, year, make, model, vin };
-      }
-      // delandmotorsports.com
-      else if (hostname.includes('delandmotorsports.com')) {
+      } else if (hostname.includes('delandmotorsports.com')) {
         const lastSegment = parts[parts.length -1] || '';
         const dashParts = lastSegment.split('-');
         const year = dashParts[0] || '';
@@ -170,9 +169,7 @@
         const makeModel = makeModelParts.join(' ').replace(/-/g, ' ');
         const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
         return { vehicle, year, make: '', model: makeModel, vin };
-      }
-      // ziapowersports.com
-      else if (hostname.includes('ziapowersports.com')) {
+      } else if (hostname.includes('ziapowersports.com')) {
         const segment = parts[0] || '';
         const dashParts = segment.split('-');
         const yearIndex = dashParts.findIndex(p => /^\d{4}$/.test(p));
@@ -185,9 +182,7 @@
         } else {
           return { vehicle: segment.replace(/-/g, ' '), year: '', make: '', model: '', vin: '' };
         }
-      }
-      // ridermarket.com
-      else if (hostname.includes('ridermarket.com')) {
+      } else if (hostname.includes('ridermarket.com')) {
         const lastSegment = parts[parts.length -1] || '';
         const dashParts = lastSegment.split('-');
         const year = dashParts.find(p => /^\d{4}$/.test(p)) || '';
@@ -202,9 +197,7 @@
         const makeModel = makeModelParts.join(' ').replace(/-/g, ' ');
         const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
         return { vehicle, year, make: '', model: makeModel, vin };
-      }
-      // fallback: return URL
-      else {
+      } else {
         return { vehicle: url, year: '', make: '', model: '', vin: '' };
       }
     } catch(e) {
@@ -219,8 +212,8 @@
       return;
     }
     const lines = raw.split("\\n");
-    const tableBody = document.querySelector("#utmTable tbody");
-    tableBody.innerHTML = '';
+    const outputDiv = document.getElementById("output");
+    outputDiv.innerHTML = '';
     allRows = [];
 
     lines.forEach((line, idx) => {
@@ -244,11 +237,27 @@
           </div>`;
       }).join('');
 
-      tableBody.innerHTML += `<tr>
-        <td>${vehicle}</td>
-        <td><a href="${url}" target="_blank" class="original-url">Link</a></td>
-        <td class="utm-links-vertical">${utmHTML}</td>
-      </tr>`;
+      outputDiv.innerHTML += `
+        <section>
+          <h2>Link ${idx + 1}</h2>
+          <table aria-label="UTM Links for Link ${idx + 1}">
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Original URL</th>
+                <th>UTM Links</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>${vehicle}</td>
+                <td><a href="${url}" target="_blank" class="original-url">Link</a></td>
+                <td class="utm-links-vertical">${utmHTML}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      `;
     });
   }
 
