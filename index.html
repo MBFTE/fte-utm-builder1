@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Branded</title>
+<title>FTE UTM Generator - Multi-Site Support</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -19,14 +19,6 @@
     padding: 2rem;
     max-width: 1200px;
     margin: auto;
-  }
-  .logo-container {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  .logo-container img {
-    max-width: 200px;
-    height: auto;
   }
   header {
     text-align: center;
@@ -128,11 +120,6 @@
 </style>
 </head>
 <body>
-
-<div class="logo-container">
-  <img src="FTE-Logo-WHT.png" alt="Follow The Eyes Logo" />
-</div>
-
 <header>
   <h1>FTE UTM Generator</h1>
   <p>Paste URLs one per line. Example:</p>
@@ -160,14 +147,66 @@
   function parseUrl(url) {
     try {
       const urlObj = new URL(url);
+      const hostname = urlObj.hostname.toLowerCase();
       const parts = urlObj.pathname.split('/').filter(Boolean);
-      const year = parts[3] || '';
-      const make = parts[4] || '';
-      const modelRaw = parts[5] || '';
-      const vin = parts[6] || '';
-      const model = modelRaw.replace(/-/g, ' ');
-      const vehicle = [year, make, model, vin].filter(Boolean).join(' ') || 'Unknown Vehicle';
-      return { vehicle, year, make, model, vin };
+
+      // skypowersportssanford.com
+      if (hostname.includes('skypowersportssanford.com')) {
+        const year = parts[3] || '';
+        const make = parts[4] || '';
+        const modelRaw = parts[5] || '';
+        const vin = parts[6] || '';
+        const model = modelRaw.replace(/-/g, ' ');
+        const vehicle = [year, make, model, vin].filter(Boolean).join(' ');
+        return { vehicle, year, make, model, vin };
+      }
+      // delandmotorsports.com
+      else if (hostname.includes('delandmotorsports.com')) {
+        const lastSegment = parts[parts.length -1] || '';
+        const dashParts = lastSegment.split('-');
+        const year = dashParts[0] || '';
+        const vin = dashParts[dashParts.length -1] || '';
+        const makeModelParts = dashParts.slice(1, dashParts.length -1);
+        const makeModel = makeModelParts.join(' ').replace(/-/g, ' ');
+        const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
+        return { vehicle, year, make: '', model: makeModel, vin };
+      }
+      // ziapowersports.com
+      else if (hostname.includes('ziapowersports.com')) {
+        const segment = parts[0] || '';
+        const dashParts = segment.split('-');
+        const yearIndex = dashParts.findIndex(p => /^\d{4}$/.test(p));
+        if (yearIndex > 2) { 
+          const year = dashParts[yearIndex];
+          const makeModelParts = dashParts.slice(2, yearIndex);
+          const makeModel = makeModelParts.join(' ');
+          const vehicle = [year, makeModel].filter(Boolean).join(' ');
+          return { vehicle, year, make: '', model: makeModel, vin: '' };
+        } else {
+          return { vehicle: segment.replace(/-/g, ' '), year: '', make: '', model: '', vin: '' };
+        }
+      }
+      // ridermarket.com
+      else if (hostname.includes('ridermarket.com')) {
+        const lastSegment = parts[parts.length -1] || '';
+        const dashParts = lastSegment.split('-');
+        const year = dashParts.find(p => /^\d{4}$/.test(p)) || '';
+        const vin = dashParts[dashParts.length -1] || '';
+        const yearIndex = dashParts.indexOf(year);
+        let makeModelParts = [];
+        if(yearIndex > 0) {
+          makeModelParts = dashParts.slice(0, yearIndex).concat(dashParts.slice(yearIndex + 1, dashParts.length -1));
+        } else {
+          makeModelParts = dashParts.slice(0, dashParts.length -1);
+        }
+        const makeModel = makeModelParts.join(' ').replace(/-/g, ' ');
+        const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
+        return { vehicle, year, make: '', model: makeModel, vin };
+      }
+      // fallback: return URL
+      else {
+        return { vehicle: url, year: '', make: '', model: '', vin: '' };
+      }
     } catch(e) {
       return { vehicle: 'Unknown Vehicle', year: '', make: '', model: '', vin: '' };
     }
