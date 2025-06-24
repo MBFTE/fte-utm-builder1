@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Separate Sections per URL</title>
+<title>FTE UTM Generator - Title Case for Some URLs</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -168,6 +168,12 @@
 <div id="output"></div>
 
 <script>
+  // Helper to title case each word
+  function toTitleCase(str) {
+    return str.replace(/\w\S*/g, 
+      txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  }
+
   let allRows = [];
 
   function parseUrl(url) {
@@ -190,7 +196,7 @@
         const year = dashParts[0] || '';
         const vin = dashParts[dashParts.length -1] || '';
         const makeModelParts = dashParts.slice(1, dashParts.length -1);
-        const makeModel = makeModelParts.join(' ').replace(/-/g, ' ');
+        const makeModel = toTitleCase(makeModelParts.join(' ').replace(/-/g, ' '));
         const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
         return { vehicle, year, make: '', model: makeModel, vin };
       } else if (hostname.includes('ziapowersports.com')) {
@@ -218,7 +224,7 @@
         } else {
           makeModelParts = dashParts.slice(0, dashParts.length -1);
         }
-        const makeModel = makeModelParts.join(' ').replace(/-/g, ' ');
+        const makeModel = toTitleCase(makeModelParts.join(' ').replace(/-/g, ' '));
         const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
         return { vehicle, year, make: '', model: makeModel, vin };
       } else {
@@ -235,9 +241,9 @@
       alert("Paste URLs first.");
       return;
     }
-    const lines = raw.split(/\r?\n/); // Correctly split on real newlines
+    const lines = raw.split(/\r?\n/);
     const outputDiv = document.getElementById("output");
-    outputDiv.innerHTML = ''; // Clear old results before new generation
+    outputDiv.innerHTML = '';
     allRows = [];
 
     lines.forEach((line, idx) => {
