@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Multi-Section with Correct Newline Split</title>
+<title>FTE UTM Generator - Separate Sections per URL</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -235,10 +235,9 @@
       alert("Paste URLs first.");
       return;
     }
-    // Correct splitting on actual newlines
-    const lines = raw.split(/\r?\n/);
+    const lines = raw.split(/\r?\n/); // Correctly split on real newlines
     const outputDiv = document.getElementById("output");
-    outputDiv.innerHTML = '';
+    outputDiv.innerHTML = ''; // Clear old results before new generation
     allRows = [];
 
     lines.forEach((line, idx) => {
@@ -299,9 +298,9 @@
       alert("Generate links first.");
       return;
     }
-    let csv = "Vehicle,Year,Make,Model,VIN,Original URL,Platform,UTM Link\\n";
+    let csv = "Vehicle,Year,Make,Model,VIN,Original URL,Platform,UTM Link\n";
     allRows.forEach(row => {
-      csv += `"${row.Vehicle}","${row.Year}","${row.Make}","${row.Model}","${row.VIN}","${row.URL}","${row.Platform}","${row.UTM}"\\n`;
+      csv += `"${row.Vehicle}","${row.Year}","${row.Make}","${row.Model}","${row.VIN}","${row.URL}","${row.Platform}","${row.UTM}"\n`;
     });
     const blob = new Blob([csv], { type: "text/csv" });
     const link = document.createElement("a");
