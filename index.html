@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Blue #1f6c9b Update</title>
+<title>FTE UTM Generator - Branded</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -20,6 +20,14 @@
     max-width: 1200px;
     margin: auto;
   }
+  .logo-container {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .logo-container img {
+    max-width: 200px;
+    height: auto;
+  }
   header {
     text-align: center;
     margin-bottom: 2rem;
@@ -29,7 +37,7 @@
     margin-bottom: 0.2rem;
   }
   header p code {
-    color: var(--fte-blue);
+    color: var(--white);
     font-weight: 600;
   }
   textarea {
@@ -43,6 +51,7 @@
     outline: none;
     resize: vertical;
     min-height: 120px;
+    color: var(--fte-dark1);
   }
   button {
     background-color: var(--fte-blue);
@@ -91,7 +100,7 @@
   .utm-label {
     font-weight: 600;
     margin-bottom: 0.2rem;
-    color: var(--fte-blue);
+    color: var(--white);
     font-size: 0.9rem;
   }
   .utm-link-container input {
@@ -119,6 +128,11 @@
 </style>
 </head>
 <body>
+
+<div class="logo-container">
+  <img src="FTE-Logo-WHT.png" alt="Follow The Eyes Logo" />
+</div>
+
 <header>
   <h1>FTE UTM Generator</h1>
   <p>Paste URLs one per line. Example:</p>
