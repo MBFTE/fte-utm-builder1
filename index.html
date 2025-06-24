@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Vehicle Title Case & Logo</title>
+<title>FTE UTM Generator - Vehicle Title Case & Full URL Link</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -97,23 +97,26 @@
     width: 40%;
   }
   th.original-url {
-    width: 15%;
-    text-align: center;
+    width: 40%;
+    text-align: left;
+    word-break: break-word;
   }
   th.utm-links {
-    width: 45%;
+    width: 20%;
   }
   td.vehicle {
     font-weight: 500;
     word-break: break-word;
   }
   td.original-url {
-    text-align: center;
+    text-align: left;
+    word-break: break-word;
   }
   a.original-url {
     color: var(--white);
     text-decoration: underline;
     font-weight: 600;
+    word-break: break-word;
   }
   .utm-links-vertical {
     display: flex;
@@ -174,7 +177,7 @@
 <div id="output"></div>
 
 <script>
-  // Title case helper for vehicle output only
+  // Helper to title case vehicle output only
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, 
       txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
