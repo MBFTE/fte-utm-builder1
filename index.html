@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Title Case for Some URLs</title>
+<title>FTE UTM Generator - Vehicle Title Case & Logo</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -22,6 +22,11 @@
     padding: 2rem;
     max-width: 1200px;
     margin: auto;
+  }
+  #logo {
+    display: block;
+    margin: 0 auto 1rem auto;
+    max-width: 200px;
   }
   header {
     text-align: center;
@@ -155,6 +160,7 @@
 </style>
 </head>
 <body>
+<img id="logo" src="FTE-Logo-WHT.png" alt="Follow The Eyes Logo" />
 <header>
   <h1>FTE UTM Generator</h1>
   <p>Paste URLs one per line. Example:</p>
@@ -168,7 +174,7 @@
 <div id="output"></div>
 
 <script>
-  // Helper to title case each word
+  // Title case helper for vehicle output only
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, 
       txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
@@ -281,7 +287,7 @@
             <tbody>
               <tr>
                 <td class="vehicle">${vehicle}</td>
-                <td class="original-url"><a href="${url}" target="_blank" class="original-url">Link</a></td>
+                <td class="original-url"><a href="${url}" target="_blank" class="original-url">${url}</a></td>
                 <td class="utm-links utm-links-vertical">${utmHTML}</td>
               </tr>
             </tbody>
