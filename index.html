@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Styled Multi-Section</title>
+<title>FTE UTM Generator - Multi-Section with Correct Newline Split</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -11,7 +11,7 @@
     --fte-dark1: #2e0f64;
     --fte-dark2: #6b2ec5;
     --white: #fff;
-    --row-bg: #4b489f; /* bluish purple from screenshot */
+    --row-bg: #4b489f;
     --button-bg: #20768c;
     --button-hover: #1a5c6d;
   }
@@ -235,7 +235,8 @@
       alert("Paste URLs first.");
       return;
     }
-    const lines = raw.split("\\n");
+    // Correct splitting on actual newlines
+    const lines = raw.split(/\r?\n/);
     const outputDiv = document.getElementById("output");
     outputDiv.innerHTML = '';
     allRows = [];
