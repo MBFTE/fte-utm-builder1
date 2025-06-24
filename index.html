@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Vehicle Column Revised</title>
+<title>FTE UTM Generator - Correct Vehicle Parsing</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
+  /* ... (Same styling as before, omitted here for brevity) ... */
   :root {
     --fte-red: #E63946;
     --fte-dark1: #2e0f64;
@@ -112,7 +113,7 @@
 <header>
   <h1>FTE UTM Generator</h1>
   <p>Paste URLs one per line. Example:</p>
-  <p><code>https://www.skypowersportssanford.com/inventory/display/new/2025/Polaris/Outlaw-110-EFI/RF3YKA116ST090412/</code></p>
+  <p><code>https://www.skypowersportssanford.com/inventory/display/new/2025/Polaris/Ranger-Crew-XP-1000-Texas-Edition/4XARSF991S8781967/</code></p>
 </header>
 
 <textarea id="manualInput" placeholder="Paste URLs here..."></textarea>
@@ -137,16 +138,16 @@
     try {
       const urlObj = new URL(url);
       const parts = urlObj.pathname.split('/').filter(Boolean);
-      const year = parts[4] || '';
-      const make = parts[5] || '';
-      const modelRaw = parts[6] || '';
-      // Replace dashes with spaces in model and make
-      const makeClean = make.replace(/-/g, ' ');
+      const year = parts[3] || '';
+      const make = parts[4] || '';
+      const modelRaw = parts[5] || '';
+      const vin = parts[6] || '';
+      // Clean model: replace dashes with spaces
       const model = modelRaw.replace(/-/g, ' ');
-      const vehicle = [year, makeClean, model].filter(Boolean).join(' ') || 'Unknown Vehicle';
-      return { vehicle, year, make: makeClean, model };
+      const vehicle = [year, make, model, vin].filter(Boolean).join(' ') || 'Unknown Vehicle';
+      return { vehicle, year, make, model, vin };
     } catch(e) {
-      return { vehicle: 'Unknown Vehicle', year: '', make: '', model: '' };
+      return { vehicle: 'Unknown Vehicle', year: '', make: '', model: '', vin: '' };
     }
   }
 
@@ -164,7 +165,7 @@
     lines.forEach((line, idx) => {
       const url = line.trim();
       if (!url.startsWith("http")) return;
-      const { vehicle, year, make, model } = parseUrl(url);
+      const { vehicle, year, make, model, vin } = parseUrl(url);
 
       const delimiter = url.includes('?') ? '&' : '?';
       const platforms = ['facebook', 'display', 'CTV', 'tiktok', 'audio'];
@@ -173,7 +174,7 @@
         const medium = p === 'CTV' ? 'CTV' : p.toLowerCase();
         const tagged = `${url}${delimiter}utm_source=FTE&utm_medium=${medium}`;
         const inputId = `link-${idx}-${i}`;
-        allRows.push({ Vehicle: vehicle, Year: year, Make: make, Model: model, Platform: p, UTM: tagged, URL: url });
+        allRows.push({ Vehicle: vehicle, Year: year, Make: make, Model: model, VIN: vin, Platform: p, UTM: tagged, URL: url });
         return `
           <div class="utm-link-container">
             <input type="text" id="${inputId}" value="${tagged}" readonly />
@@ -202,9 +203,9 @@
       alert("Generate links first.");
       return;
     }
-    let csv = "Vehicle,Year,Make,Model,Original URL,Platform,UTM Link\\n";
+    let csv = "Vehicle,Year,Make,Model,VIN,Original URL,Platform,UTM Link\\n";
     allRows.forEach(row => {
-      csv += `"${row.Vehicle}","${row.Year}","${row.Make}","${row.Model}","${row.URL}","${row.Platform}","${row.UTM}"\\n`;
+      csv += `"${row.Vehicle}","${row.Year}","${row.Make}","${row.Model}","${row.VIN}","${row.URL}","${row.Platform}","${row.UTM}"\\n`;
     });
     const blob = new Blob([csv], { type: "text/csv" });
     const link = document.createElement("a");
@@ -217,3 +218,4 @@
 </script>
 </body>
 </html>
+
