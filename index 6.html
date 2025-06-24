@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FTE Manual UTM Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --fte-red: #E63946; --fte-dark: #1D1D1D; --fte-gray: #f4f4f4; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #2e0f64, #6b2ec5); color: #ffffff;
+      color: #222;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    header {
+      background-color: #E63946;
+      color: #fff;
+      padding: 1rem 2rem;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    textarea {
+      width: 100%;
+      font-family: monospace;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #E63946;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+    }
+    th, td {
+      padding: 0.8rem;
+      border: 1px solid #444;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #E63946; color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .utm-link {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .utm-link input {
+      width: 100%;
+      margin-right: 0.5rem;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  
+    <header style="background: transparent; border: 2px solid white;">
+      <h1 style="font-weight: 600;">FTE UTM Generator</h1>
+      <p style="font-weight: 400;">Paste your links below. Format: <code style='color:#E63946;'>Year,Make,Model,URL</code></p>
+    
+    <h1>FTE Manual UTM Generator</h1>
+    <p>Paste multiple vehicle lines below. Format: <code>Year,Make,Model,URL</code></p>
+  </header>
+
+  <textarea id="manualInput" placeholder="2024,Polaris,Ranger XP,https://dealer.com/123" rows="6"></textarea>
+  <button onclick="processManualInput()">Generate UTM Links</button>
+
+  <table id="utmTable">
+    <thead>
+      <tr>
+        <th>Vehicle</th>
+        <th>UTM Links</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    function processManualInput() {
+      const raw = document.getElementById("manualInput").value.trim();
+      if (!raw) return alert("Paste your vehicle links first.");
+      const lines = raw.split("\n");
+      const tableBody = document.querySelector("#utmTable tbody");
+      tableBody.innerHTML = '';
+
+      lines.forEach((line, lineIndex) => {
+        const parts = line.split(",");
+        if (parts.length < 4) return;
+        const [year, make, model, url] = parts.map(p => p.trim());
+        if (!url.startsWith("http")) return;
+
+        const vehicle = `${year} ${make} ${model}`;
+        const delimiter = url.includes('?') ? '&' : '?';
+        const platforms = ['facebook', 'display', 'CTV', 'tiktok', 'audio'];
+
+        const utmHTML = platforms.map((p, i) => {
+          const medium = p === 'CTV' ? 'CTV' : p.toLowerCase();
+          const tagged = `${url}${delimiter}utm_source=FTE&utm_medium=${medium}`;
+          const inputId = `link-${lineIndex}-${i}`;
+          return `
+            <div class="utm-link">
+              <input type="text" id="${inputId}" value="${tagged}" readonly />
+              <button onclick="copyToClipboard('${inputId}')">Copy</button>
+            </div>`;
+        }).join('');
+
+        tableBody.innerHTML += `<tr><td><strong>${vehicle}</strong></td><td>${utmHTML}</td></tr>`;
+      });
+    }
+
+    function copyToClipboard(id) {
+      const input = document.getElementById(id);
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Copied: " + input.value);
+    }
+  </script>
+</body>
+</html>
