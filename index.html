@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator with URL Parsing</title>
+<title>FTE UTM Generator</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   :root {
@@ -41,6 +41,8 @@
     border-radius: 6px;
     border: none;
     outline: none;
+    resize: vertical;
+    min-height: 120px;
   }
   button {
     background-color: var(--fte-red);
@@ -101,7 +103,7 @@
   <p><code>https://www.skypowersportssanford.com/inventory/display/new/2025/Polaris/Outlaw-110-EFI/RF3YKA116ST090412/</code></p>
 </header>
 
-<textarea id="manualInput" placeholder="Paste URLs here..." rows="8"></textarea>
+<textarea id="manualInput" placeholder="Paste URLs here..."></textarea>
 <button onclick="processManualInput()">Generate UTM Links</button>
 <button onclick="downloadCSV()">Download CSV</button>
 
@@ -124,9 +126,8 @@
   function parseUrl(url) {
     try {
       const urlObj = new URL(url);
-      const parts = urlObj.pathname.split('/').filter(Boolean); // remove empty
-      // Expect 2025 at index 4, Make at 5, Model at 6 based on pattern
-      // example: /inventory/display/new/2025/Polaris/Outlaw-110-EFI/...
+      const parts = urlObj.pathname.split('/').filter(Boolean);
+      // Based on your URL structure:
       const year = parts[4] || '';
       const make = parts[5] || '';
       const model = parts[6] || '';
@@ -202,4 +203,3 @@
 </script>
 </body>
 </html>
-
