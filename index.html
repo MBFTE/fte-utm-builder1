@@ -1,396 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FTE UTM Generator - Mobile Friendly</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --fte-blue: #1f6c9b;
-    --fte-dark1: #2e0f64;
-    --fte-dark2: #6b2ec5;
-    --white: #fff;
-    --row-bg: #4b489f;
-    --button-bg: #20768c;
-    --button-hover: #1a5c6d;
-  }
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, var(--fte-dark1), var(--fte-dark2));
-    color: var(--white);
-    padding: 2rem;
-    max-width: 1200px;
-    margin: auto;
-  }
-  #logo {
-    display: block;
-    margin: 0 auto 1rem auto;
-    max-width: 200px;
-  }
-  header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  header h1 {
-    font-weight: 600;
-    margin-bottom: 0.2rem;
-  }
-  header p code {
-    color: var(--white);
-    font-weight: 600;
-  }
-  textarea {
-    width: 100%;
-    font-family: monospace;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: none;
-    outline: none;
-    resize: vertical;
-    min-height: 120px;
-    color: var(--fte-dark1);
-  }
-  button {
-    background-color: var(--fte-blue);
-    color: var(--white);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 0.75rem 1.25rem;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    margin-bottom: 1rem;
-  }
-  button:hover {
-    background-color: #164a68;
-  }
-  #output section {
-    background-color: var(--row-bg);
-    padding: 1rem 1.5rem;
-    margin-bottom: 1.25rem;
-    border-radius: 8px;
-  }
-  #output h2 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    color: var(--white);
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: transparent;
-  }
-  th, td {
-    padding: 0.5rem 1rem;
-    vertical-align: top;
-    color: var(--white);
-  }
-  th {
-    font-weight: 600;
-  }
-  th.vehicle {
-    width: 40%;
-  }
-  th.original-url {
-    width: 40%;
-    text-align: left;
-    word-break: break-word;
-  }
-  th.utm-links {
-    width: 20%;
-  }
-  td.vehicle {
-    font-weight: 500;
-    word-break: break-word;
-  }
-  td.original-url {
-    text-align: left;
-    word-break: break-word;
-  }
-  a.original-url {
-    color: var(--white);
-    text-decoration: underline;
-    font-weight: 600;
-    word-break: break-word;
-  }
-  .utm-links-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-  }
-  .utm-link-container {
-    display: flex;
-    flex-direction: column;
-  }
-  .utm-label {
-    font-weight: 700;
-    margin-bottom: 0.2rem;
-    color: var(--white);
-    font-size: 0.9rem;
-  }
-  .utm-link-container input {
-    width: 100%;
-    min-width: 320px;
-    font-family: monospace;
-    border-radius: 4px;
-    border: none;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.9rem;
-    color: var(--fte-dark1);
-    box-sizing: border-box;
-  }
-  .utm-link-container button {
-    margin-top: 0.3rem;
-    padding: 0.35rem 0.7rem;
-    font-size: 0.85rem;
-    background-color: var(--button-bg);
-    color: var(--white);
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    align-self: flex-start;
-    transition: background-color 0.3s ease;
-  }
-  .utm-link-container button:hover {
-    background-color: var(--button-hover);
-  }
-
-  /* Responsive Mobile Styles */
-  @media (max-width: 768px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FTE UTM Generator - Mobile Friendly</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --fte-blue: #1f6c9b;
+      --fte-dark1: #2e0f64;
+      --fte-dark2: #6b2ec5;
+      --white: #fff;
+      --row-bg: #4b489f;
+      --button-bg: #20768c;
+      --button-hover: #1a5c6d;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, var(--fte-dark1), var(--fte-dark2));
+      color: var(--white);
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    #logo {
+      display: block;
+      margin: 0 auto 1rem auto;
+      max-width: 200px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    header p code {
+      color: var(--white);
+      font-weight: 600;
+    }
     textarea {
-      min-height: 150px;
-      font-size: 1.1rem;
+      width: 100%;
+      font-family: monospace;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      min-height: 120px;
+      color: var(--fte-dark1);
     }
     button {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1.1rem;
-    }
-    table, thead, tbody, th, td, tr {
-      display: block;
-      width: 100%;
-    }
-    thead tr {
-      display: none; /* Hide table headers on mobile */
-    }
-    tbody tr {
-      margin-bottom: 1.5rem;
-      border-bottom: 2px solid var(--fte-blue);
-      padding-bottom: 1rem;
-    }
-    tbody tr td {
-      display: flex;
-      justify-content: space-between;
-      padding-left: 0;
-      padding-right: 0;
-      border: none;
+      background-color: var(--fte-blue);
       color: var(--white);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      margin-bottom: 1rem;
     }
-    tbody tr td.vehicle::before {
-      content: "Vehicle:";
-      font-weight: 700;
-      width: 40%;
-    }
-    tbody tr td.original-url::before {
-      content: "Original URL:";
-      font-weight: 700;
-      width: 40%;
-    }
-    tbody tr td.utm-links::before {
-      content: "UTM Links:";
-      font-weight: 700;
-      width: 40%;
-    }
-    .utm-link-container input {
-      min-width: auto;
-    }
-    .utm-link-container button {
-      width: auto;
-      padding: 0.5rem 1rem;
+    button:hover {
+      background-color: #164a68;
     }
     #output section {
-      padding: 1rem 1rem;
+      background-color: var(--row-bg);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.25rem;
+      border-radius: 8px;
     }
-  }
-</style>
+    #output h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: transparent;
+    }
+    th, td {
+      padding: 0.5rem 1rem;
+      vertical-align: top;
+      color: var(--white);
+    }
+    th {
+      font-weight: 600;
+    }
+    th.vehicle {
+      width: 40%;
+    }
+    th.original-url {
+      width: 40%;
+      text-align: left;
+      word-break: break-word;
+    }
+    th.utm-links {
+      width: 20%;
+    }
+    td.vehicle {
+      font-weight: 500;
+      word-break: break-word;
+    }
+    td.original-url {
+      text-align: left;
+      word-break: break-word;
+    }
+    a.original-url {
+      color: var(--white);
+      text-decoration: underline;
+      font-weight: 600;
+      word-break: break-word;
+    }
+    .utm-links-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .utm-link-container {
+      display: flex;
+      flex-direction: column;
+    }
+    .utm-label {
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+      color: var(--white);
+      font-size: 0.9rem;
+    }
+    .utm-link-container input {
+      width: 100%;
+      min-width: 320px;
+      font-family: monospace;
+      border-radius: 4px;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.9rem;
+      color: var(--fte-dark1);
+      box-sizing: border-box;
+    }
+    .utm-link-container button {
+      margin-top: 0.3rem;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.85rem;
+      background-color: var(--button-bg);
+      color: var(--white);
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      align-self: flex-start;
+      transition: background-color 0.3s ease;
+    }
+    .utm-link-container button:hover {
+      background-color: var(--button-hover);
+    }
+
+    @media (max-width: 768px) {
+      textarea {
+        min-height: 150px;
+        font-size: 1.1rem;
+      }
+      button {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+      }
+      table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+      }
+      thead tr {
+        display: none;
+      }
+      tbody tr {
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--fte-blue);
+        padding-bottom: 1rem;
+      }
+      tbody tr td {
+        display: flex;
+        justify-content: space-between;
+        border: none;
+      }
+      tbody tr td.vehicle::before { content: "Vehicle:"; font-weight: 700; width: 40%; }
+      tbody tr td.original-url::before { content: "Original URL:"; font-weight: 700; width: 40%; }
+      tbody tr td.utm-links::before { content: "UTM Links:"; font-weight: 700; width: 40%; }
+    }
+  </style>
 </head>
 <body>
-<img id="logo" src="FTE-Logo-WHT.png" alt="Follow The Eyes Logo" />
-<header>
-  <h1>FTE UTM Generator</h1>
-  <p>Paste URLs one per line. Example:</p>
-  <p><code>https://www.skypowersportssanford.com/inventory/display/new/2025/Polaris/Ranger-Crew-XP-1000-Texas-Edition/4XARSF991S8781967/</code></p>
-  <p>Supports URLs with hash fragments (e.g. <code>#Kidney-Stones</code>)</p>
-</header>
+  <img id="logo" src="FTE-Logo-WHT.png" alt="Follow The Eyes Logo" />
+  <header>
+    <h1>FTE UTM Generator</h1>
+    <p>Paste URLs one per line. Example:</p>
+    <p><code>https://www.skypowersportssanford.com/inventory/display/new/2025/Polaris/Ranger-Crew-XP-1000-Texas-Edition/4XARSF991S8781967/</code></p>
+    <p>Supports URLs with hash fragments (e.g. <code>#Kidney-Stones</code>)</p>
+  </header>
 
-<textarea id="manualInput" placeholder="Paste URLs here..."></textarea>
-<button onclick="processManualInput()">Generate UTM Links</button>
-<button onclick="downloadCSV()">Download CSV</button>
+  <textarea id="manualInput" placeholder="Paste URLs here..."></textarea>
+  <button onclick="processManualInput()">Generate UTM Links</button>
+  <button onclick="downloadCSV()">Download CSV</button>
 
-<div id="output"></div>
+  <div id="output"></div>
 
-<script>
-  // Helper to title case vehicle output only
-  function toTitleCase(str) {
-    return str.replace(/\w\S*/g, 
-      txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-  }
+  <script>
+    function toTitleCase(str) {
+      return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    }
 
-  let allRows = [];
+    let allRows = [];
 
-  // Build UTM-tagged URL keeping hash fragment intact
-  function buildUtmUrl(originalUrl, utmSource, utmMedium) {
-    let baseUrl = originalUrl.split('#')[0];  // URL before #
-    let hash = originalUrl.includes('#') ? originalUrl.substring(originalUrl.indexOf('#')) : '';
-    let delimiter = baseUrl.includes('?') ? '&' : '?';
-    return `${baseUrl}${delimiter}utm_source=${utmSource}&utm_medium=${utmMedium}${hash}`;
-  }
+    function buildUtmUrl(originalUrl, utmSource, utmMedium) {
+      let baseUrl = originalUrl.split('#')[0];
+      let hash = originalUrl.includes('#') ? originalUrl.substring(originalUrl.indexOf('#')) : '';
+      let delimiter = baseUrl.includes('?') ? '&' : '?';
+      return `${baseUrl}${delimiter}utm_source=${utmSource}&utm_medium=${utmMedium}${hash}`;
+    }
 
-  function parseUrl(url) {
-    try {
-      const urlObj = new URL(url);
-      const hostname = urlObj.hostname.toLowerCase();
-      const parts = urlObj.pathname.split('/').filter(Boolean);
+    function parseUrl(url) {
+      try {
+        const urlObj = new URL(url);
+        const hostname = urlObj.hostname.toLowerCase();
+        const parts = urlObj.pathname.split('/').filter(Boolean);
 
-      if (hostname.includes('skypowersportssanford.com')) {
-        const year = parts[3] || '';
-        const make = parts[4] || '';
-        const modelRaw = parts[5] || '';
-        const vin = parts[6] || '';
-        const model = modelRaw.replace(/-/g, ' ');
-        const vehicle = [year, make, model, vin].filter(Boolean).join(' ');
-        return { vehicle, year, make, model, vin };
-      } else if (hostname.includes('delandmotorsports.com')) {
-        const lastSegment = parts[parts.length -1] || '';
-        const dashParts = lastSegment.split('-');
-        const year = dashParts[0] || '';
-        const vin = dashParts[dashParts.length -1] || '';
-        const makeModelParts = dashParts.slice(1, dashParts.length -1);
-        const makeModel = toTitleCase(makeModelParts.join(' ').replace(/-/g, ' '));
-        const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
-        return { vehicle, year, make: '', model: makeModel, vin };
-      } else if (hostname.includes('ziapowersports.com')) {
-        const segment = parts[0] || '';
-        const dashParts = segment.split('-');
-        const yearIndex = dashParts.findIndex(p => /^\d{4}$/.test(p));
-        if (yearIndex > 2) { 
-          const year = dashParts[yearIndex];
-          const makeModelParts = dashParts.slice(2, yearIndex);
-          const makeModel = makeModelParts.join(' ');
-          const vehicle = [year, makeModel].filter(Boolean).join(' ');
-          return { vehicle, year, make: '', model: makeModel, vin: '' };
+        if (hostname.includes('skypowersportssanford.com')) {
+          const year = parts[3] || '';
+          const make = parts[4] || '';
+          const modelRaw = parts[5] || '';
+          const vin = parts[6] || '';
+          const model = modelRaw.replace(/-/g, ' ');
+          const vehicle = [year, make, model, vin].filter(Boolean).join(' ');
+          return { vehicle, year, make, model, vin };
+
+        } else if (hostname.includes('delandmotorsports.com')) {
+          const lastSegment = parts[parts.length -1] || '';
+          const dashParts = lastSegment.split('-');
+          const year = dashParts[0] || '';
+          const vin = dashParts[dashParts.length -1] || '';
+          const makeModelParts = dashParts.slice(1, dashParts.length -1);
+          const makeModel = toTitleCase(makeModelParts.join(' ').replace(/-/g, ' '));
+          const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
+          return { vehicle, year, make: '', model: makeModel, vin };
+
+        } else if (hostname.includes('ziapowersports.com')) {
+          const segment = parts[0] || '';
+          const dashParts = segment.split('-');
+          const yearIndex = dashParts.findIndex(p => /^\d{4}$/.test(p));
+          if (yearIndex > 2) { 
+            const year = dashParts[yearIndex];
+            const makeModelParts = dashParts.slice(2, yearIndex);
+            const makeModel = makeModelParts.join(' ');
+            const vehicle = [year, makeModel].filter(Boolean).join(' ');
+            return { vehicle, year, make: '', model: makeModel, vin: '' };
+          } else {
+            return { vehicle: segment.replace(/-/g, ' '), year: '', make: '', model: '', vin: '' };
+          }
+
+        } else if (hostname.includes('ridermarket.com')) {
+          const lastSegment = parts[parts.length -1] || '';
+          const dashParts = lastSegment.split('-');
+          const year = dashParts.find(p => /^\d{4}$/.test(p)) || '';
+          const vin = dashParts[dashParts.length -1] || '';
+          const yearIndex = dashParts.indexOf(year);
+          let makeModelParts = [];
+          if(yearIndex > 0) {
+            makeModelParts = dashParts.slice(0, yearIndex).concat(dashParts.slice(yearIndex + 1, dashParts.length -1));
+          } else {
+            makeModelParts = dashParts.slice(0, dashParts.length -1);
+          }
+          const makeModel = toTitleCase(makeModelParts.join(' ').replace(/-/g, ' '));
+          const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
+          return { vehicle, year, make: '', model: makeModel, vin };
+
+        } else if (hostname.includes('lonestarpowersports.com')) {
+          const lastSegment = parts[parts.length -1] || '';
+          const dashParts = lastSegment.split('-');
+          const year = dashParts.find(p => /^\d{4}$/.test(p)) || '';
+          const vin = dashParts[dashParts.length -1] || '';
+          const yearIndex = dashParts.indexOf(year);
+          let makeModelParts = [];
+          if (yearIndex > 0) {
+            makeModelParts = dashParts.slice(2, yearIndex);
+          }
+          const makeModel = toTitleCase(makeModelParts.join(' ').replace(/-/g, ' '));
+          const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
+          return { vehicle, year, make: '', model: makeModel, vin };
+
         } else {
-          return { vehicle: segment.replace(/-/g, ' '), year: '', make: '', model: '', vin: '' };
+          return { vehicle: url, year: '', make: '', model: '', vin: '' };
         }
-      } else if (hostname.includes('ridermarket.com')) {
-        const lastSegment = parts[parts.length -1] || '';
-        const dashParts = lastSegment.split('-');
-        const year = dashParts.find(p => /^\d{4}$/.test(p)) || '';
-        const vin = dashParts[dashParts.length -1] || '';
-        const yearIndex = dashParts.indexOf(year);
-        let makeModelParts = [];
-        if(yearIndex > 0) {
-          makeModelParts = dashParts.slice(0, yearIndex).concat(dashParts.slice(yearIndex + 1, dashParts.length -1));
-        } else {
-          makeModelParts = dashParts.slice(0, dashParts.length -1);
-        }
-        const makeModel = toTitleCase(makeModelParts.join(' ').replace(/-/g, ' '));
-        const vehicle = [year, makeModel, vin].filter(Boolean).join(' ');
-        return { vehicle, year, make: '', model: makeModel, vin };
-      } else {
-        return { vehicle: url, year: '', make: '', model: '', vin: '' };
+      } catch(e) {
+        return { vehicle: 'Unknown Vehicle', year: '', make: '', model: '', vin: '' };
       }
-    } catch(e) {
-      return { vehicle: 'Unknown Vehicle', year: '', make: '', model: '', vin: '' };
     }
-  }
 
-  function processManualInput() {
-    const raw = document.getElementById("manualInput").value.trim();
-    if (!raw) {
-      alert("Paste URLs first.");
-      return;
+    function processManualInput() {
+      const raw = document.getElementById("manualInput").value.trim();
+      if (!raw) {
+        alert("Paste URLs first.");
+        return;
+      }
+      const lines = raw.split(/\r?\n/);
+      const outputDiv = document.getElementById("output");
+      outputDiv.innerHTML = '';
+      allRows = [];
+
+      lines.forEach((line, idx) => {
+        const url = line.trim();
+        if (!url.startsWith("http")) return;
+        const { vehicle, year, make, model, vin } = parseUrl(url);
+
+        const platforms = ['facebook', 'display', 'CTV', 'tiktok', 'audio'];
+
+        const utmHTML = platforms.map((p, i) => {
+          const medium = p === 'CTV' ? 'CTV' : p.toLowerCase();
+          const tagged = buildUtmUrl(url, 'FTE', medium);
+          const inputId = `link-${idx}-${i}`;
+          allRows.push({ Vehicle: vehicle, Year: year, Make: make, Model: model, VIN: vin, Platform: p, UTM: tagged, URL: url });
+          return `
+            <div class="utm-link-container">
+              <span class="utm-label">${p.charAt(0).toUpperCase() + p.slice(1)}</span>
+              <input type="text" id="${inputId}" value="${tagged}" readonly />
+              <button onclick="copyToClipboard('${inputId}')">Copy</button>
+            </div>`;
+        }).join('');
+
+        outputDiv.innerHTML += `
+          <section>
+            <h2>Link ${idx + 1}</h2>
+            <table aria-label="UTM Links for Link ${idx + 1}">
+              <thead>
+                <tr>
+                  <th class="vehicle">Vehicle</th>
+                  <th class="original-url">Original URL</th>
+                  <th class="utm-links">UTM Links</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="vehicle">${vehicle}</td>
+                  <td class="original-url"><a href="${url}" target="_blank" class="original-url">${url}</a></td>
+                  <td class="utm-links utm-links-vertical">${utmHTML}</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        `;
+      });
     }
-    const lines = raw.split(/\r?\n/);
-    const outputDiv = document.getElementById("output");
-    outputDiv.innerHTML = '';
-    allRows = [];
 
-    lines.forEach((line, idx) => {
-      const url = line.trim();
-      if (!url.startsWith("http")) return;
-      const { vehicle, year, make, model, vin } = parseUrl(url);
-
-      const platforms = ['facebook', 'display', 'CTV', 'tiktok', 'audio'];
-
-      const utmHTML = platforms.map((p, i) => {
-        const medium = p === 'CTV' ? 'CTV' : p.toLowerCase();
-        const tagged = buildUtmUrl(url, 'FTE', medium);
-        const inputId = `link-${idx}-${i}`;
-        allRows.push({ Vehicle: vehicle, Year: year, Make: make, Model: model, VIN: vin, Platform: p, UTM: tagged, URL: url });
-        return `
-          <div class="utm-link-container">
-            <span class="utm-label">${p.charAt(0).toUpperCase() + p.slice(1)}</span>
-            <input type="text" id="${inputId}" value="${tagged}" readonly />
-            <button onclick="copyToClipboard('${inputId}')">Copy</button>
-          </div>`;
-      }).join('');
-
-      outputDiv.innerHTML += `
-        <section>
-          <h2>Link ${idx + 1}</h2>
-          <table aria-label="UTM Links for Link ${idx + 1}">
-            <thead>
-              <tr>
-                <th class="vehicle">Vehicle</th>
-                <th class="original-url">Original URL</th>
-                <th class="utm-links">UTM Links</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="vehicle">${vehicle}</td>
-                <td class="original-url"><a href="${url}" target="_blank" class="original-url">${url}</a></td>
-                <td class="utm-links utm-links-vertical">${utmHTML}</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-      `;
-    });
-  }
-
-  function copyToClipboard(id) {
-    const input = document.getElementById(id);
-    input.select();
-    input.setSelectionRange(0, 99999);
-    document.execCommand("copy");
-    alert("Copied: " + input.value);
-  }
-
-  function downloadCSV() {
-    if (allRows.length === 0) {
-      alert("Generate links first.");
-      return;
+    function copyToClipboard(id) {
+      const input = document.getElementById(id);
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Copied: " + input.value);
     }
-    let csv = "Vehicle,Year,Make,Model,VIN,Original URL,Platform,UTM Link\n";
-    allRows.forEach(row => {
-      csv += `"${row.Vehicle}","${row.Year}","${row.Make}","${row.Model}","${row.VIN}","${row.URL}","${row.Platform}","${row.UTM}"\n`;
-    });
-    const blob = new Blob([csv], { type: "text/csv" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "fte_utm_links.csv";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-</script>
+
+    function downloadCSV() {
+      if (allRows.length === 0) {
+        alert("Generate links first.");
+        return;
+      }
+      let csv = "Vehicle,Year,Make,Model,VIN,Original URL,Platform,UTM Link\n";
+      allRows.forEach(row => {
+        csv += `"${row.Vehicle}","${row.Year}","${row.Make}","${row.Model}","${row.VIN}","${row.URL}","${row.Platform}","${row.UTM}"\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "fte_utm_links.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
 </body>
 </html>
+
